@@ -4,7 +4,7 @@ const nodemailer=require('nodemailer');
 const jwt=require('jsonwebtoken');
 require('dotenv').config();
 
-Host.find({}).then((data)=>console.log(data));
+//Host.find({}).then((data)=>console.log(data));
 
 registerHost = async (req, res) => {
     const transporter = nodemailer.createTransport({
@@ -14,7 +14,7 @@ registerHost = async (req, res) => {
             pass: process.env.emailpassword,
         },
         });
-
+  
   const { name, email, phone, password } = req.body;
 
   const errors = [];
@@ -64,7 +64,7 @@ registerHost = async (req, res) => {
 
     const token = jwt.sign({ email }, process.env.jwt_secret, { expiresIn: "1h" });
     //const verificationUrl = `http://localhost:3000/api/v1/project/verify/${token}`;
-    const verificationUrl = `https://trekathon-2025.onrender.com/verify/${token}`;
+    const verificationUrl = `https://trekathon-2025.onrender.com/api/v1/project/verify/${token}`;
 
     //send email for verification
     await transporter.sendMail({
@@ -76,6 +76,7 @@ registerHost = async (req, res) => {
 
     res.status(201).json({ message: "Registration successful. Please verify your email." });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error:error,message: "Server error. Please try again later." });
   }
 };
