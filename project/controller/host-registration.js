@@ -11,7 +11,7 @@ registerHost = async (req, res) => {
         service: "Gmail",
         auth: {
             user: "chinmoysharma2003@gmail.com",
-            pass: 'zmsr xvov oajl wlkn',
+            pass: process.env.emailpassword,
         },
         });
 
@@ -63,7 +63,8 @@ registerHost = async (req, res) => {
     await newHost.save();
 
     const token = jwt.sign({ email }, process.env.jwt_secret, { expiresIn: "1h" });
-    const verificationUrl = `http://localhost:3000/api/v1/project/verify/${token}`;
+    //const verificationUrl = `http://localhost:3000/api/v1/project/verify/${token}`;
+    const verificationUrl = `https://trekathon-2025.onrender.com/verify/${token}`;
 
     //send email for verification
     await transporter.sendMail({
