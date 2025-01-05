@@ -30,4 +30,19 @@ const signup=async(req,res)=>{
     }
 };
 
-module.exports={dashboard,signup};
+const adminlogin=(req, res) => {
+    const { username, password } = req.body;
+
+    // Replace with your own admin validation logic
+    if (username === 'admin' && password === 'securepassword') {
+        // Set admin session
+        req.session.isAdmin = true;
+        return res.redirect('/api/v1/project/admin/dashboard'); // Redirect to admin dashboard
+    }
+
+    res.status(401).send('Invalid credentials');
+}
+
+
+
+module.exports={dashboard,signup,adminlogin};
