@@ -1,7 +1,9 @@
 const {dashboard,signup,adminlogin}=require("../controller/main");
-const {registerHost,verifyEmail}=require('../controller/host-registration');
+const {registerHost,loginHost,verifyEmail,verifyIdentity,hostdashboard}=require('../controller/host-registration');
 const auth=require("../middleware/auth");
 const path=require('path');
+const {upload,uploadnone}=require("../middleware/uploadhostfiles")
+
 
 const express=require('express');
 const router=express.Router();
@@ -26,8 +28,15 @@ router.use('/admin/dashboard', adminauth, express.static(path.join(__dirname, '.
 
 
 //host app routes
+
 router.post("/host/register", registerHost);
 
 router.get("/verify/:token", verifyEmail);
+
+router.post("/host/verify-identity",upload.fields([{ name: "idDoc" }, { name: "selfie" }]),verifyIdentity);
+
+router.post("/host/login",loginHost);
+
+router.post("/host/hostdashboard",uploadnone.none(),hostdashboard);
 
 module.exports=router;

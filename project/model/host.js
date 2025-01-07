@@ -5,7 +5,8 @@ const hostSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   phone: { type: String, required: true },
   password: { type: String, required: true },
-  isVerified: { type: Boolean, default: false },
+  isVerifiedEmail: { type: Boolean, default: false },
+  isVerifiedDocument: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
 });
 

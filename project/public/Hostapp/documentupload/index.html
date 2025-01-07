@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Government ID and Selfie</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Your Documents</h1>
+        <form id="uploadForm">
+            <label for="idDoc">Upload Government ID (JPG):</label>
+            <input name="idDoc" type="file" id="idFile" accept="image/jpeg" required>
+            
+            <label for="selfie">Upload Selfie (JPG):</label>
+            <input name="selfie" type="file" id="selfieFile" accept="image/jpeg" required>
+            
+            <button type="submit">Upload</button>
+        </form>
+        <div id="message"></div>
+    </div>
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
