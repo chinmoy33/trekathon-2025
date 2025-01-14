@@ -1,5 +1,5 @@
 const {dashboard,signup,adminlogin}=require("../controller/main");
-const {registerHost,loginHost,verifyEmail,verifyIdentity,hostdashboard}=require('../controller/host-registration');
+const {registerHost,loginHost,verifyEmail,verifyIdentity,hostdashboard,searchpackage,searchhomestay}=require('../controller/host-registration');
 const auth=require("../middleware/auth");
 const path=require('path');
 const {upload,uploadnone}=require("../middleware/uploadhostfiles")
@@ -38,5 +38,9 @@ router.post("/host/verify-identity",upload.fields([{ name: "idDoc" }, { name: "s
 router.post("/host/login",loginHost);
 
 router.post("/host/hostdashboard",uploadnone.none(),hostdashboard);
+
+router.post("/host/hostdashboard/searchpackage",searchpackage);
+
+router.post("/host/hostdashboard/searchhomestay",searchhomestay);
 
 module.exports=router;

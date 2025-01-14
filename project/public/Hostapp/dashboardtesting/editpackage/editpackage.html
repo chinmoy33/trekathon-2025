@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel package</title>
+    <link rel="stylesheet" href="./styles.css"></link>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+  </head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBackdrop" aria-controls="offcanvasWithBackdrop"><img src="./resources/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg" alt="sidebar"></button> -->
+        <a class="navbar-brand" href="">Edit Package</a>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="" id="dashboardlink">Dashboard</a>
+            </li>
+          </ul> 
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <!-- Travel Packages Section -->
+      <div class="section row g-4 card-group" id="packages">
+          <h2>Travel Packages</h2>
+          
+      </div>
+
+      <!-- Homestays Section -->
+      <div class="section row g-4 card-group" id="homestays">
+          <h2>Homestays</h2>
+  
+      </div>
+  </div>
+
+  <div class="modal fade" id="addPackageModal" tabindex="-1" aria-labelledby="addPackageModalLabel" inert>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addPackageModalLabel">Add New Package</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addPackageForm">
+            <div class="mb-3">
+              <label for="packageImage" class="form-label">Upload Image</label>
+              <input type="file" class="form-control" id="packageImage" accept="image/*">
+            </div>
+            <div class="mb-3">
+              <label for="packageTitle" class="form-label">Title</label>
+              <input type="text" class="form-control" id="packageTitle" placeholder="Enter title">
+            </div>
+            <div class="mb-3">
+              <label for="packageDuration" class="form-label">Number of nights</label>
+              <input type="number" class="form-control" id="packageDuration" min="1" max="100"  step="1">
+            </div>
+            <div class="mb-3">
+              <label for="packagePrice" class="form-label">Package Price</label>
+              <input type="number" class="form-control" id="packagePrice" placeholder="Enter price">
+            </div>
+            <div class="mb-3">
+              <label for="packageText" class="form-label">Description</label>
+              <textarea class="form-control" id="packageText" rows="3" placeholder="Enter description"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Edit Package</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for adding homestay -->
+  <div class="modal fade" id="addhomestayModal" tabindex="-1" aria-labelledby="addhomestayModalLabel" inert>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addhomestayModalLabel">Add New Homestay</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addhomestayForm">
+            <div class="mb-3">
+              <label for="homestayImage" class="form-label">Upload Image</label>
+              <input type="file" class="form-control" id="homestayImage" accept="image/*">
+            </div>
+            <div class="mb-3">
+              <label for="homestayTitle" class="form-label">Title</label>
+              <input type="text" class="form-control" id="homestayTitle" placeholder="Enter title">
+            </div>
+            <div class="mb-3">
+              <label for="homestayDuration" class="form-label">Number of nights</label>
+              <input type="number" class="form-control" id="homestayDuration" min="1" max="100"  step="1">
+            </div>
+            <div class="mb-3">
+              <label for="homestayPrice" class="form-label">Homestay Price per night</label>
+              <input type="number" class="form-control" id="homestayPrice" placeholder="Enter price">
+            </div>
+            <div class="mb-3">
+              <label for="homestayText" class="form-label">Description</label>
+              <textarea class="form-control" id="homestayText" rows="3" placeholder="Enter description"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Edit Homestay</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>  
+  <script type="module" src="./editpackagemain.js"></script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Dashboard</title>
+    <link rel="stylesheet" href="./styles.css"></link>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+</head>
+<body>
+    <!-- <div class="header">
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBackdrop" aria-controls="offcanvasWithBackdrop">Enable backdrop (default)</button>
+        <h1>Travel Dashboard</h1>
+        <div class="search-container">
+            <input
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="Search for packages or homestays..."
+            />
+            <button class="search-button" id="searchButton">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          
+          <div id="searchResults" class="search-results"></div>
+          
+    </div> -->
+
+    <!-- offcanvas/sidebar -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasWithBackdrop" aria-labelledby="offcanvasLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasLabel">Menu</h5>
+          <button
+            type="button"
+            class="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <p>
+            Welcome to the sidebar! Here's some useful information:
+          </p>
+          <ul class="list-group list-group-flush">
+            <!-- <li class="list-group-item mb-3">Dashboard</li> -->
+            <li class="list-group-item mb-3" id="mylistings">My Listings</li>
+            <li class="list-group-item mb-3" id="edit"><a class="custom-link" href="editpackage/editpackage.html">Edit</a></li>
+            <!-- <li class="list-group-item mb-3">Settings</li> -->
+            <!-- <li class="list-group-item mb-3">Logout</li> -->
+          </ul>
+          <!-- <button class="btn btn-primary mt-3 w-100">Action Button</button> -->
+        </div>
+      </div>
+      
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBackdrop" aria-controls="offcanvasWithBackdrop"><img src="./resources/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg" alt="sidebar"></button>
+          <a class="navbar-brand" href="#">Travel Dashboard</a>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <div class="navbar-text me-3" id="welcomediv">
+                </div>
+              </li>
+              <!-- <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+              </li> -->
+              <li class="nav-item dropdown">
+                <button class="btn btn-outline-light dropdown-toggle" id="addPackageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  Add Package
+                </button>
+                <ul class="dropdown-menu dropdown-end" aria-labelledby="addPackageDropdown">
+                  <li><button class="dropdown-item add-package" data-bs-toggle="modal" data-bs-target="#addTravelPackageModal">Add Travel Package</button></li>
+                  <li><button class="dropdown-item add-homestay" data-bs-toggle="modal" data-bs-target="#addHomestayModal">Add Homestay</button></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <button class="btn btn-outline-light ms-3" id="getallpackages">Get All packages</button>
+              </li>
+            </ul>
+            <form class="d-flex">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="width:30rem;">
+              <button class="btn btn-outline-light" type="submit">Search</button>
+            </form>
+            <button class="btn btn-outline-danger d-flex ms-3" id="logout">Logout</button>
+                  
+          </div>
+        </div>
+      </nav>    
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasWithBackdrop" aria-labelledby="offcanvasWithBackdropLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasWithBackdropLabel">Offcanvas with backdrop</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <p>.....</p>
+        </div>
+      </div>
+
+    <div class="container">
+        <!-- Travel Packages Section -->
+        <div class="section row g-4 card-group" id="packages">
+            <h2>Travel Packages</h2>
+            <!-- <div class="card" style="width: 18rem;">
+                <h3>Beach Paradise</h3>
+                <p>Relax on the sandy beaches with a 5-day stay including all meals and activities.</p>
+                <button onclick="bookPackage('Beach Paradise')">Book Now</button>
+            </div> -->
+            <!-- <div class="col-sm-3">
+                <div class="card h-100" style="width: 18rem;">
+                    <img src="./resources/pexels-simon-robben-55958-614810.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text" style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                      
+                    </div>
+                    <div class="card-footer border-0">
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                  </div>
+            </div> -->
+            
+
+            <!-- <div class="card">
+                <h3>Mountain Adventure</h3>
+                <p>Explore the serene mountains with guided treks and camping for 3 days.</p>
+                <button onclick="bookPackage('Mountain Adventure')">Book Now</button>
+            </div> -->
+
+            <!-- <div class="col-sm-3">
+                <div class="card h-100" style="width: 18rem;">
+                    <img src="./resources/pexels-simon-robben-55958-614810.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text" style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                      
+                    </div>
+                    <div class="card-footer border-0">
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card h-100" style="width: 18rem;">
+                    <img src="./resources/pexels-simon-robben-55958-614810.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text" style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                      
+                    </div>
+                    <div class="card-footer border-0">
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                  </div>
+            </div> -->
+
+            <!-- <div class="col-sm-3">
+                <div class="card h-100" style="width: 18rem;">
+                    <img src="./resources/pexels-simon-robben-55958-614810.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text" style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;">Some quick example text to build on the card title and make up the bulk of the card's content.jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj</p>
+                    </div>
+                    <div class="card-footer border-0">
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card h-100" style="width: 18rem;">
+                    <img src="./resources/pexels-simon-robben-55958-614810.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text" style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+                    </div>
+                    <div class="card-footer border-0">
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                  </div>
+            </div> -->
+
+        </div>
+
+        <!-- Homestays Section -->
+        <div class="section row g-4 card-group" id="homestays">
+            <h2>Homestays</h2>
+            <!-- <div class="card" style="width: 18rem;">
+                <h3>Cozy Cottage</h3>
+                <p>A peaceful homestay in the countryside with beautiful surroundings.</p>
+                <button onclick="bookHomestay('Cozy Cottage')">Book Now</button>
+            </div> -->
+
+            <!-- <div class="col-sm-3">
+                <div class="card h-100" style="width: 18rem;">
+                    <img src="./resources/pexels-simon-robben-55958-614810.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text" style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                      
+                    </div>
+                    <div class="card-footer border-0">
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                  </div>
+            </div> -->
+
+            <!-- <div class="card" style="width: 18rem;">
+                <h3>Luxury Villa</h3>
+                <p>Enjoy a luxurious experience with all modern amenities in the city.</p>
+                <button onclick="bookHomestay('Luxury Villa')">Book Now</button>
+            </div> -->
+            <!-- <div class="col-sm-3">
+                <div class="card h-100" style="width: 18rem;">
+                    <img src="./resources/pexels-simon-robben-55958-614810.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text" style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;">Some quick example text to build on the card title and make up the bulk of the card's content.kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk</p>
+                      
+                    </div>
+                    <div class="card-footer border-0">
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                  </div>
+            </div> -->
+        </div>
+    </div>
+
+    <!-- Modal for Adding Package -->
+    <div class="modal fade" id="addPackageModal" tabindex="-1" aria-labelledby="addPackageModalLabel" inert>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addPackageModalLabel">Add New Package</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="addPackageForm">
+              <div class="mb-3">
+                <label for="packageImage" class="form-label">Upload Image</label>
+                <input type="file" class="form-control" id="packageImage" accept="image/*" required>
+              </div>
+              <div class="mb-3">
+                <label for="packageTitle" class="form-label">Title</label>
+                <input type="text" class="form-control" id="packageTitle" placeholder="Enter title" required>
+              </div>
+              <div class="mb-3">
+                <label for="packageDuration" class="form-label">Number of nights</label>
+                <input type="number" class="form-control" id="packageDuration" min="1" max="100"  step="1" required>
+              </div>
+              <div class="mb-3">
+                <label for="packagePrice" class="form-label">Package Price</label>
+                <input type="number" class="form-control" id="packagePrice" placeholder="Enter price" required>
+              </div>
+              <div class="mb-3">
+                <label for="packageText" class="form-label">Description</label>
+                <textarea class="form-control" id="packageText" rows="3" placeholder="Enter description" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Add Package</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Modal for adding homestay -->
+    <div class="modal fade" id="addhomestayModal" tabindex="-1" aria-labelledby="addhomestayModalLabel" inert>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addhomestayModalLabel">Add New Homestay</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="addhomestayForm">
+              <div class="mb-3">
+                <label for="homestayImage" class="form-label">Upload Image</label>
+                <input type="file" class="form-control" id="homestayImage" accept="image/*" required>
+              </div>
+              <div class="mb-3">
+                <label for="homestayTitle" class="form-label">Title</label>
+                <input type="text" class="form-control" id="homestayTitle" placeholder="Enter title" required>
+              </div>
+              <div class="mb-3">
+                <label for="homestayDuration" class="form-label">Number of nights</label>
+                <input type="number" class="form-control" id="homestayDuration" min="1" max="100"  step="1" required>
+              </div>
+              <div class="mb-3">
+                <label for="homestayPrice" class="form-label">Homestay Price per night</label>
+                <input type="number" class="form-control" id="homestayPrice" placeholder="Enter price" required>
+              </div>
+              <div class="mb-3">
+                <label for="homestayText" class="form-label">Description</label>
+                <textarea class="form-control" id="homestayText" rows="3" placeholder="Enter description" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Add Homestay</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
+
+
+

@@ -1,4 +1,6 @@
 const Host = require("../model/host");
+const travelpackagemodel = require("../model/travelpackage");
+const homestaymodel = require("../model/homestaypackage");
 const bcrypt = require("bcrypt");
 const nodemailer=require('nodemailer');
 const jwt=require('jsonwebtoken');
@@ -6,8 +8,6 @@ const axios = require("axios");
 const FormData = require('form-data');
 const fs = require("fs");
 require('dotenv').config();
-
-//Host.find({}).then((data)=>console.log(data));
 
 registerHost = async (req, res) => {
     const transporter = nodemailer.createTransport({
@@ -90,22 +90,11 @@ loginHost=async(req,res)=>{
 
   const errors = [];
 
-  // Validate Name
-  // if (!name || name.length < 3) {
-  //   errors.push({ field: "name", message: "Name must be at least 3 characters long." });
-  // }
-
   // Validate Email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!email || !emailRegex.test(email)) {
     errors.push({ field: "email", message: "Invalid email address." });
   }
-
-  // Validate Phone
-  // const phoneRegex = /^[0-9]{10}$/;
-  // if (!phone || !phoneRegex.test(phone)) {
-  //   errors.push({ field: "phone", message: "Phone number must be 10 digits." });
-  // }
 
   // Validate Password
   if (!password || password.length < 6) {
@@ -233,11 +222,6 @@ verifyIdentity=async (req, res) => {
             const host = await Host.findOne({ email: decoded.email });
         
             if (!host) return res.status(404).json({ location:"verifyIdentity",message: "Host not found" });
-        
-            
-        
-            //res.status(200).json({ message: "Document verified successfully." });
-            
 
         
             if (similarity > 80) {                // Confidence threshold, can be adjusted
@@ -267,10 +251,14 @@ verifyIdentity=async (req, res) => {
 };
 
 hostdashboard=async(req,res)=>{
-  const token = req.body.token;
-  if (!token) {
-    return res.status(400).json({location:"hostdashboard", message: 'Token is missing.' });
+  
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).send('Unauthorized');
   }
+
+  const token = req.cookies['token'];
 
   try{
     const decoded = jwt.verify(token, process.env.jwt_secret);
@@ -278,16 +266,50 @@ hostdashboard=async(req,res)=>{
 
     if (!host) return res.status(404).json({ location:"hostdashboard",message: "Host not found" });
 
-    return res.status(200).json({token, message: `Welcome ${host.name}` });
+    return res.status(200).json({token, message: `Welcome ${host.name}`, email:host.email });
   }
   catch(error)
   {
-    return res.status(400).json({message:"Access Denied"});
+    return res.status(400).json({message:"Access denied!"});
   }
         
 };
 
+searchpackage=async(req,res)=>{
+  const {name}=req.body;
+  try{
+    const data=await travelpackagemodel.find({title : {$regex : name,$options:'i'}});
+    if(data.length===0)
+    {
+        return res.status(404).json({message:"No packages found!"});
+    }
+    res.status(200).json(data);
+  }
+  catch(error)
+  {
+    res.status(500).json({message:"Error occured in catch block of searchpackage controller"});
+  }
+  
+};
 
-module.exports={registerHost,loginHost,verifyEmail,verifyIdentity,hostdashboard};
+searchhomestay=async(req,res)=>{
+  const {name}=req.body;
+  try{
+    const data=await homestaymodel.find({title : {$regex : name,$options:'i'}});
+    if(data.length===0)
+    {
+        return res.status(404).json({message:"No homestays found!"});
+    }
+    res.status(200).json(data);
+  }
+  catch(error)
+  {
+    res.status(500).json({message:"Error occured in catch block of searchhomestay controller"});
+  }
+  
+};
+
+
+module.exports={registerHost,loginHost,verifyEmail,verifyIdentity,hostdashboard,searchpackage,searchhomestay};
 
   

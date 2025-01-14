@@ -1,0 +1,120 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+.header {
+    background-color: #007bff;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+.container {
+    padding: 2rem;
+    
+}
+
+.section {
+    margin-bottom: 2rem;
+}
+
+
+
+/* .section h2 {
+    color: #343a40;
+} */
+
+.card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+.card button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.card button:hover {
+    background-color: #0056b3;
+}
+
+/* Search Bar Styles */
+.search-container {
+display: flex;
+align-items: center;
+width: 100%;
+max-width: 500px;
+margin: 20px auto;
+border: 2px solid #ddd;
+border-radius: 25px;
+padding: 5px 10px;
+background-color: #fff;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-input {
+flex: 1;
+border: none;
+outline: none;
+font-size: 16px;
+padding: 5px 10px;
+}
+
+.search-button {
+background-color: #007bff;
+border: none;
+outline: none;
+color: white;
+padding: 8px 15px;
+border-radius: 20px;
+cursor: pointer;
+font-size: 16px;
+transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+background-color: #0056b3;
+}
+
+.search-button i {
+font-size: 18px;
+}
+
+/* Search Results */
+.search-results {
+margin-top: 10px;
+max-width: 500px;
+margin: 10px auto;
+background: #f9f9f9;
+border: 1px solid #ddd;
+border-radius: 8px;
+padding: 10px;
+display: none; /* Initially hidden */
+}
+
+.card-img-top {
+    aspect-ratio: 1/1; /* Makes all images square */
+    object-fit: cover;
+  }
+
+.custom-link {
+    text-decoration: none; /* Removes the underline */
+    color: inherit; /* Makes the text inherit the parent's color */
+    background-color: transparent; /* Ensures no default background */
+    cursor: pointer; /* Indicates interactivity */
+}

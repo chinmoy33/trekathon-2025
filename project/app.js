@@ -6,10 +6,23 @@ const mainroute=require("./route/main");
 const connectDB = require('./db/connect');
 const auth=require("./middleware/auth");
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const bodyParser = require("body-parser");
+const Card = require("./model/travelpackage");
+const Cardhomestay= require("./model/homestaypackage");
 const uri=process.env.uri;
+const rawBody = require('raw-body');
 
-app.use(express.json());
-app.use(express.urlencoded({extended:false}));
+
+
+
+app.use(cookieParser());
+
+// app.use(express.json());
+// app.use(express.urlencoded({extended:false}));
+
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 app.use(cors());
 
@@ -27,115 +40,119 @@ app.use("/",express.static("./public/login"));
 app.use("/api/v1/project/host/register",express.static("./public/Hostapp/hostregister"));
 app.use("/api/v1/project/host/verify-identity",express.static("./public/Hostapp/documentupload"));
 app.use("/api/v1/project/host/login",express.static("./public/Hostapp/hostlogin"));
-app.use("/api/v1/project/host/hostdashboard",express.static("./public/Hostapp/hostdashboard"));
+app.use("/api/v1/project/host/hostdashboard",express.static("./public/Hostapp/dashboardtesting"));
+
 
 
 app.use("/api/v1/project",mainroute);
 
+app.post("/api/cards", async (req, res) => {
+    try {
+      const card = new Card(req.body);
+      const savedCard = await card.save();
+      res.status(201).json(savedCard);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  });
 
+app.patch("/api/cards/:id", async(req, res)=>{
+    try{
+      const cardId = req.params.id; // Extract card ID from URL
+      const updates = req.body;    // Extract updates from the request body
+      // Find the card by ID
+      const card=await Card.findOneAndUpdate({id:Number(cardId)},updates,{new:true,runValidators:true});
 
+      if (!card) {
+          return res.status(404).json({ error: 'Card not found' });
+      }
 
-// const upload = multer({ dest: "uploads/" });
-// const deleteFile = (filePath) => {
-//     fs.unlink(filePath, (err) => {
-//       if (err) {
-//         console.error('Error deleting file:', err);
-//       } else {
-//         console.log('File deleted successfully:', filePath);
-//       }
-//     });
-//   };
+      res.status(200).json({ message: 'Package updated successfully', card });
+    }
+    catch(err){
+      res.status(400).json({error: err.message});
+    }
+});
 
-// // Face++ API credentials
-// const FACE_PLUS_PLUS_API_KEY = process.env.FACE_PLUS_PLUS_API_KEY;
-// const FACE_PLUS_PLUS_API_SECRET = process.env.FACE_PLUS_PLUS_API_SECRET;
+app.patch("/api/cardshomestay/:id", async(req, res)=>{
+  try{
+    const cardId = req.params.id; // Extract card ID from URL
+    const updates = req.body;    // Extract updates from the request body
+    // Find the card by ID
+    const card=await Cardhomestay.findOneAndUpdate({id:Number(cardId)},updates,{new:true,runValidators:true});
 
-// // Route to handle ID and selfie uploads
-// app.post("/verify-identity", upload.fields([{ name: "idDoc" }, { name: "selfie" }]), async (req, res) => {
-//   const { idDoc, selfie } = req.files;
+    if (!card) {
+        return res.status(404).json({ error: 'Card not found' });
+    }
 
-//   if (!idDoc || !selfie) {
-//     return res.status(400).json({ message: "Both ID and selfie are required." });
-//   }
+    res.status(200).json({ message: 'Homestay updated successfully', card });
+  }
+  catch(err){
+    res.status(400).json({error: err.message});
+  }
+});
 
-//   let form = new FormData();
-// form.append('api_key', FACE_PLUS_PLUS_API_KEY);
-// form.append('api_secret', FACE_PLUS_PLUS_API_SECRET);
-// form.append('image_file', fs.createReadStream(idDoc[0].path)); // Send file directly
-// form.append('return_landmark', '1'); // Optional: return landmarks for face detection
+app.delete("/api/cards/:id", async(req,res)=>{
+    try{
+      const cardId=req.params.id;
 
-// try {
-//     const detectionResponse = await axios.post(
-//       'https://api-us.faceplusplus.com/facepp/v3/detect',
-//       form,
-//       {
-//         headers: {
-//           ...form.getHeaders()
-//         }
-//       }
-//     );
+      const card=await Card.findOneAndDelete({id:Number(cardId)});
+      if (!card) {
+        return res.status(404).json({ error: 'Card not found' });
+      }
+
+      res.status(200).json({ message: 'Package deleted successfully', card });
+    }
+    catch(err){
+      res.status(400).json({error: err.message});
+    }
+});
+
+app.delete("/api/cardshomestay/:id", async(req,res)=>{
+  try{
+    const cardId=req.params.id;
+
+    const card=await Cardhomestay.findOneAndDelete({id:Number(cardId)});
+    if (!card) {
+      return res.status(404).json({ error: 'Card not found' });
+    }
+
+    res.status(200).json({ message: 'Homestay deleted successfully', card });
+  }
+  catch(err){
+    res.status(400).json({error: err.message});
+  }
+});
+
+app.post("/api/cardshomestay", async (req, res) => {
+try {
+    const card = new Cardhomestay(req.body);
+    const savedCard = await card.save();
+    res.status(201).json(savedCard);
+} catch (err) {
+    res.status(400).json({ error: err.message });
+}
+});
   
-//     console.log(detectionResponse.data); // Handle API response here
+  // Get all cards
+  app.get("/api/cards", async (req, res) => {
+    try {
+      const cards = await Card.find();
+      res.status(200).json({cards,nbhits:cards.length});
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
 
-//     const faces = detectionResponse.data.faces;
-//         if (faces.length === 0) {
-//           return res.status(400).json({ message: "No faces detected in the image." });
-//         }
-    
-//         const faceToken = faces[0].face_token;
-
-//         form = new FormData();
-//         form.append('api_key', FACE_PLUS_PLUS_API_KEY);
-//         form.append('api_secret', FACE_PLUS_PLUS_API_SECRET);
-//         form.append('image_file1', fs.createReadStream(idDoc[0].path));
-//         form.append('image_file2', fs.createReadStream(selfie[0].path));
-
-//         const verificationResponse = await axios.post(
-//             "https://api-us.faceplusplus.com/facepp/v3/compare",
-//             form,
-//             {
-//               headers: {
-//                 ...form.getHeaders()
-//               }
-//             }
-//           );
-
-//           const similarity = verificationResponse.data.confidence;
-      
-//           if (similarity > 80) {  // Confidence threshold, can be adjusted
-//             return res.status(200).json({
-//               message: "Identity verified successfully.",
-//               confidence: similarity,
-//             });
-//           } else {
-//             return res.status(400).json({
-//               message: "Face match failed, similarity too low.",
-//               confidence: similarity,
-//             });
-//           }
-
-//   } catch (error) {
-    
-//     if (error.response && error.response.data.error_message === 'CONCURRENCY_LIMIT_EXCEEDED') {
-//         console.log('Concurrency limit exceeded. Retrying...');
-//         await delay(5000); // Wait 5 seconds before retrying
-//         return await makeRequest(form); // Retry the request
-//       } else {
-//         console.error('Error uploading image:', error.response ? error.response.data : error.message);
-//       }
-//   } 
-//   finally {
-//     // Clean up the uploaded files after the process is done
-//     deleteFile(idDoc[0].path); // Delete the ID document
-//     deleteFile(selfie[0].path); // Delete the resized selfie image
-//   }
-
-// });
-
-
-
-
-
+  app.get("/api/cardshomestay", async (req, res) => {
+    try {
+      const cards = await Cardhomestay.find();
+      res.status(200).json({cards,nbhits:cards.length});
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+  
 
 
 const port = process.env.PORT || 3000;
