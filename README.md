@@ -1,1 +1,0 @@
-# trekathon-2025
