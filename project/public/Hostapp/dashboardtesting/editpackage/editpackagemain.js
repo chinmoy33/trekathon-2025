@@ -182,12 +182,34 @@ async function handleDelete(cardId)
 
         const cardstobeupdated=response.data.cards.filter((card)=>card.id>Number(cardId));
 
-        cardstobeupdated.forEach(async(card)=>{
-            const updatedcardid=card.id-1;
-            await axios.patch(`http://127.0.0.1:3000/api/cards/${card.id}`,{id:updatedcardid});
-        })
+        // cardstobeupdated.forEach(async(card)=>{
+        //     const updatedcardid=card.id-1;
+        //     await axios.patch(`http://127.0.0.1:3000/api/cards/${card.id}`,{id:updatedcardid});
+        // })
 
-        fetchmylistings();
+        
+
+        // fetchmylistings();
+
+
+        // Update all affected cards' IDs
+        const updatePromises = cardstobeupdated.map(async (card) => {
+            const updatedCardId = card.id - 1;
+            return axios.patch(`http://127.0.0.1:3000/api/cards/${card.id}`, { id: updatedCardId });
+        });
+
+        // Wait for all updates to complete
+        await Promise.all(updatePromises);
+
+        // Fetch and re-render the listings
+        await fetchmylistings();
+
+        // document.querySelectorAll(".delete").forEach((button)=>{
+        //     if(Number(button.getAttribute("id"))>Number(cardId))
+        //     {
+        //         button.setAttribute("id",Number(button.getAttribute("id")-1));
+        //     }
+        // });
 
         
     }
@@ -209,12 +231,23 @@ async function handleDeleteHomestay(cardId)
 
         const cardstobeupdated=response.data.cards.filter((card)=>card.id>Number(cardId));
 
-        cardstobeupdated.forEach(async(card)=>{
-            const updatedcardid=card.id-1;
-            await axios.patch(`http://127.0.0.1:3000/api/cardshomestay/${card.id}`,{id:updatedcardid});
-        })
+        // cardstobeupdated.forEach(async(card)=>{
+        //     const updatedcardid=card.id-1;
+        //     await axios.patch(`http://127.0.0.1:3000/api/cardshomestay/${card.id}`,{id:updatedcardid});
+        // })
 
-        fetchmylistings();
+        // fetchmylistings();
+
+        const updatePromises = cardstobeupdated.map(async (card) => {
+            const updatedCardId = card.id - 1;
+            return axios.patch(`http://127.0.0.1:3000/api/cardshomestay/${card.id}`, { id: updatedCardId });
+        });
+
+        // Wait for all updates to complete
+        await Promise.all(updatePromises);
+
+        // Fetch and re-render the listings
+        await fetchmylistings();
 
         
     }
